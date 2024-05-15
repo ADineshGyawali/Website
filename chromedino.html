@@ -2,126 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chrome Dino Game</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f7f7f7;
-            font-family: Arial, sans-serif;
-        }
-
-        .game-container {
-            position: relative;
-            width: 600px;
+        #game {
+            width: 500px;
             height: 200px;
-            border: 1px solid #000;
-            overflow: hidden;
-            background-color: #fff;
+            border: 1px solid black;
+            position: relative;
         }
-
-        .dino {
+        #dino {
+            width: 50px;
+            height: 50px;
+            background-color: green;
             position: absolute;
-            bottom: 0;
-            left: 50px;
-            width: 40px;
-            height: 40px;
-            background-color: #000;
+            bottom: 0px;
+            left: 0px;
         }
-
-        .obstacle {
+        #block {
+            width: 50px;
+            height: 50px;
+            background-color: red;
             position: absolute;
-            bottom: 0;
-            width: 20px;
-            height: 40px;
-            background-color: #000;
-            animation: moveObstacle 2s linear infinite;
+            bottom: 0px;
+            right: 0px;
         }
-
-        @keyframes moveObstacle {
-            from { right: -20px; }
-            to { right: 600px; }
+        .jump {
+            animation: jump 0.5s linear;
+        }
+        @keyframes jump {
+            0% {
+                bottom: 0px;
+            }
+            50% {
+                bottom: 100px;
+            }
+            100% {
+                bottom: 0px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="dino" id="dino"></div>
+    <div id="game">
+        <div id="dino"></div>
+        <div id="block"></div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const dino = document.getElementById('dino');
-            const gameContainer = document.querySelector('.game-container');
-            let isJumping = false;
-            let gravity = 0.9;
-            let isGameOver = false;
-
-            function control(e) {
-                if (e.keyCode === 32) {
-                    if (!isJumping) {
-                        isJumping = true;
-                        jump();
-                    }
-                }
+        const dino = document.getElementById('dino');
+        const block = document.getElementById('block');
+        let isJumping = false;
+        document.body.onclick = () => {
+            if (!isJumping) {
+                isJumping = true;
+                dino.classList.add('jump');
+                setTimeout(() => {
+                    isJumping = false;
+                    dino.classList.remove('jump');
+                }, 500);
             }
-
-            function jump() {
-                let position = 0;
-                let timerId = setInterval(() => {
-                    if (position >= 150) {
-                        clearInterval(timerId);
-                        let downTimerId = setInterval(() => {
-                            if (position <= 0) {
-                                clearInterval(downTimerId);
-                                isJumping = false;
-                            }
-                            position -= 5;
-                            position = position * gravity;
-                            dino.style.bottom = position + 'px';
-                        }, 20);
-                    }
-                    position += 30;
-                    position = position * gravity;
-                    dino.style.bottom = position + 'px';
-                }, 20);
+        };
+        setInterval(() => {
+            const dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue('bottom'));
+            const blockLeft = parseInt(window.getComputedStyle(block).getPropertyValue('left'));
+            if (blockLeft < 50 && blockLeft > 0 && dinoTop === 0) {
+                alert('Game Over');
             }
-
-            function generateObstacle() {
-                let obstaclePosition = 600;
-                const obstacle = document.createElement('div');
-                if (!isGameOver) obstacle.classList.add('obstacle');
-                gameContainer.appendChild(obstacle);
-                obstacle.style.right = obstaclePosition + 'px';
-
-                let timerId = setInterval(() => {
-                    if (obstaclePosition > 600) {
-                        clearInterval(timerId);
-                        gameContainer.removeChild(obstacle);
-                    }
-
-                    if (
-                        obstaclePosition > 50 && obstaclePosition < 90 &&
-                        dino.style.bottom === '0px'
-                    ) {
-                        clearInterval(timerId);
-                        isGameOver = true;
-                        document.removeEventListener('keydown', control);
-                        alert('Game Over');
-                    }
-
-                    obstaclePosition -= 10;
-                    obstacle.style.right = obstaclePosition + 'px';
-                }, 20);
-
-                if (!isGameOver) setTimeout(generateObstacle, Math.random() * 4000);
-            }
-
-            generateObstacle();
-            document.addEventListener('keydown', control);
-        });
+        }, 10);
     </script>
 </body>
 </html>
