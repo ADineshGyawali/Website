@@ -47,10 +47,17 @@
         .jump {
             bottom: 60px;
         }
+        .score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="game-container">
+        <div class="score" id="score">Score: 0</div>
         <div class="dino" id="dino"></div>
         <div class="cactus" id="cactus"></div>
     </div>
@@ -58,9 +65,12 @@
     <script>
         const dino = document.getElementById('dino');
         const cactus = document.getElementById('cactus');
+        const scoreDisplay = document.getElementById('score');
+        let score = 0;
+        let gameOver = false;
 
         document.addEventListener('keydown', function(event) {
-            if (event.code === 'Space' || event.code === 'ArrowUp') {
+            if ((event.code === 'Space' || event.code === 'ArrowUp') && !gameOver) {
                 jump();
             }
         });
@@ -74,17 +84,41 @@
             }
         }
 
-        let isAlive = setInterval(function() {
+        function restartGame() {
+            cactus.style.animation = 'none';
+            setTimeout(() => {
+                cactus.style.animation = 'moveCactus 1.5s infinite linear';
+            }, 10);
+            score = 0;
+            gameOver = false;
+            scoreDisplay.textContent = 'Score: 0';
+            cactus.style.display = 'block';
+            isAlive = setInterval(checkCollision, 10);
+        }
+
+        function checkCollision() {
             let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue('bottom'));
             let cactusLeft = parseInt(window.getComputedStyle(cactus).getPropertyValue('right'));
 
             if (cactusLeft > 510 && cactusLeft < 550 && dinoTop <= 0) {
                 alert('Game Over!');
+                gameOver = true;
                 cactus.style.animation = 'none';
                 cactus.style.display = 'none';
                 clearInterval(isAlive);
+                setTimeout(restartGame, 1000); // Restart the game after 1 second
             }
-        }, 10);
+        }
+
+        function updateScore() {
+            if (!gameOver) {
+                score++;
+                scoreDisplay.textContent = 'Score: ' + score;
+            }
+        }
+
+        let isAlive = setInterval(checkCollision, 10);
+        setInterval(updateScore, 100); // Update score every 100ms
     </script>
 </body>
 </html>
