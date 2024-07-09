@@ -2,72 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chrome Dino Game</title>
     <style>
-        #game {
-            width: 500px;
-            height: 200px;
-            border: 1px solid black;
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
+        }
+        .game-container {
             position: relative;
+            width: 600px;
+            height: 200px;
+            border: 2px solid #333;
+            overflow: hidden;
+            background-color: #fff;
         }
-        #dino {
-            width: 50px;
-            height: 50px;
-            background-color: green;
+        .dino {
             position: absolute;
-            bottom: 0px;
-            left: 0px;
+            bottom: 0;
+            left: 50px;
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            transition: bottom 0.3s;
         }
-        #block {
-            width: 50px;
-            height: 50px;
-            background-color: red;
+        .cactus {
             position: absolute;
-            bottom: 0px;
-            right: 0px;
+            bottom: 0;
+            right: 0;
+            width: 20px;
+            height: 40px;
+            background-color: #333;
+            animation: moveCactus 1.5s infinite linear;
+        }
+        @keyframes moveCactus {
+            0% { right: 0; }
+            100% { right: 100%; }
         }
         .jump {
-            animation: jump 0.5s linear;
-        }
-        @keyframes jump {
-            0% {
-                bottom: 0px;
-            }
-            50% {
-                bottom: 100px;
-            }
-            100% {
-                bottom: 0px;
-            }
+            bottom: 60px;
         }
     </style>
 </head>
 <body>
-    <div id="game">
-        <div id="dino"></div>
-        <div id="block"></div>
+    <div class="game-container">
+        <div class="dino" id="dino"></div>
+        <div class="cactus" id="cactus"></div>
     </div>
+
     <script>
         const dino = document.getElementById('dino');
-        const block = document.getElementById('block');
-        let isJumping = false;
-        document.body.onclick = () => {
-            if (!isJumping) {
-                isJumping = true;
-                dino.classList.add('jump');
-                setTimeout(() => {
-                    isJumping = false;
-                    dino.classList.remove('jump');
-                }, 500);
+        const cactus = document.getElementById('cactus');
+
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' || event.code === 'ArrowUp') {
+                jump();
             }
-        };
-        setInterval(() => {
-            const dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue('bottom'));
-            const blockLeft = parseInt(window.getComputedStyle(block).getPropertyValue('left'));
-            if (blockLeft < 50 && blockLeft > 0 && dinoTop === 0) {
-                alert('Game Over');
+        });
+
+        function jump() {
+            if (!dino.classList.contains('jump')) {
+                dino.classList.add('jump');
+                setTimeout(function() {
+                    dino.classList.remove('jump');
+                }, 300);
+            }
+        }
+
+        let isAlive = setInterval(function() {
+            let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue('bottom'));
+            let cactusLeft = parseInt(window.getComputedStyle(cactus).getPropertyValue('right'));
+
+            if (cactusLeft > 510 && cactusLeft < 550 && dinoTop <= 0) {
+                alert('Game Over!');
+                cactus.style.animation = 'none';
+                cactus.style.display = 'none';
+                clearInterval(isAlive);
             }
         }, 10);
     </script>
