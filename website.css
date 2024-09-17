@@ -1,8 +1,0 @@
-nav ul li a {
-    color: blue; /* Default link color */
-    transition: color 0.3s; /* Smooth transition effect */
-}
-
-nav ul li a:hover {
-    color: red; /* Link color on hover */
-}
