@@ -43,9 +43,9 @@ nav {
 
 
 .logo-gif {
-    width: 50px; /* Adjust width as needed */
+    width: 100px; /* Adjust width as needed */
     height: auto;
-    border-radius: 10px; /* Optional: adds rounded corners to the GIF */
+    border-radius: 50px; /* Optional: adds rounded corners to the GIF */
 }
 
 .logo:hover {
