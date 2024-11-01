@@ -35,11 +35,17 @@ nav {
 
 /* Logo Styling */
 .logo {
-    font-size: 26px;
-    font-weight: bold;
-    color: #ff4081;  /* Give it a distinctive color */
+    display: inline-block
     text-decoration: none; /* Remove underline */
     transition: transform 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+/* Styling for the GIF logo */
+
+
+.logo-gif {
+    width: 150px; /* Adjust width as needed */
+    height: auto;
+    border-radius: 10px; /* Optional: adds rounded corners to the GIF */
 }
 
 .logo:hover {
