@@ -33,10 +33,20 @@ nav {
     background-color: rgba(0, 0, 0, 0.6);
 }
 
+/* Logo Styling */
 .logo {
-    font-size: 1.5rem;
+    font-size: 26px;
     font-weight: bold;
+    color: #ff4081;  /* Give it a distinctive color */
+    text-decoration: none; /* Remove underline */
+    transition: transform 0.3s ease, color 0.3s ease; /* Smooth transitions */
 }
+
+.logo:hover {
+    color: #333; /* Change color on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
 
 .nav-links {
     list-style: none;
