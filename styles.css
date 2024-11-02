@@ -129,39 +129,42 @@ footer {
 
 /* Contact Section Styling */
 #contact {
-    background-color: #282c34;;
+    background-color: #282c34; /* Dark background color */
     padding: 40px 20px;
     text-align: center;
+    color: #ffffff; /* Light text color for contrast */
 }
 
 #contact h2 {
     font-size: 2em;
     margin-bottom: 20px;
-    color: #333;
+    color: #ffffff; /* Light color for the heading */
 }
 
 #contact p {
     font-size: 1.1em;
-    color: #666;
+    color: #cccccc; /* Softer color for the paragraph text */
     margin-bottom: 30px;
 }
 
 .contact-info {
-    list-style-type: none;
+    list-style-type: none; /* Remove bullets */
     padding: 0;
+    margin: 0;
 }
 
 .contact-info li {
     font-size: 1.1em;
     margin: 10px 0;
+    color: #ffffff; /* Light color for list items */
 }
 
 .contact-info a {
-    color: #282c34;
+    color: #ff4081;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .contact-info a:hover {
-    color: #333;
+    color: #61dafb; /* Change to a soft blue on hover for a nice effect */
 }
